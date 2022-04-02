@@ -2,7 +2,6 @@ package com.example.exampleapp2022.model
 
 class DeveloperProvider {
     companion object {
-
         fun random(): DeveloperModel {
             val position = (developers.indices).random()
             return developers[position]

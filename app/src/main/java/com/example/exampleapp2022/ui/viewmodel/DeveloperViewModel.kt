@@ -6,15 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.exampleapp2022.data.model.DeveloperModel
 import com.example.exampleapp2022.domain.GetDevelopers
 import com.example.exampleapp2022.domain.GetRandomDeveloper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DeveloperViewModel : ViewModel() {
+@HiltViewModel
+class DeveloperViewModel @Inject constructor(
+    private val getDevelopers: GetDevelopers,
+    private val getRandomDeveloper: GetRandomDeveloper
+) : ViewModel() {
 
     val isProgress = MutableLiveData<Boolean>()
     val developerModel = MutableLiveData<DeveloperModel>()
-
-    var getDevelopers = GetDevelopers()
-    var getRandomDeveloper = GetRandomDeveloper()
 
     fun onCreate() {
         viewModelScope.launch {

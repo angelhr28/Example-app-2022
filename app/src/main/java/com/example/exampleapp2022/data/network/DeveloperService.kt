@@ -1,17 +1,17 @@
 package com.example.exampleapp2022.data.network
 
-import com.example.exampleapp2022.core.RetrofitHelper
 import com.example.exampleapp2022.data.model.DeveloperModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DeveloperService {
-
-    private val retrofit = RetrofitHelper.connect()
+class DeveloperService @Inject constructor(
+    private val api: DeveloperApiClient
+) {
 
     suspend fun getDevelopers(): List<DeveloperModel> {
         return withContext(Dispatchers.IO) {
-            val response = retrofit.create(DeveloperApiClient::class.java).getAllQuotes()
+            val response = api.getAllQuotes()
             response.body() ?: emptyList()
         }
     }

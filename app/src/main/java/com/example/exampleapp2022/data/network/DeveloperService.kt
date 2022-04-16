@@ -11,7 +11,7 @@ class DeveloperService @Inject constructor(
 
     suspend fun getDevelopers(): List<DeveloperModel> {
         return withContext(Dispatchers.IO) {
-            val response = api.getAllQuotes()
+            val response = api.getAllDevelopers()
             response.body() ?: emptyList()
         }
     }

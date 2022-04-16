@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface DeveloperApiClient {
     @GET("/.json")
-    suspend fun getAllQuotes(): Response<List<DeveloperModel>>
+    suspend fun getAllDevelopers(): Response<List<DeveloperModel>>
 }

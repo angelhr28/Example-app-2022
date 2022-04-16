@@ -3,26 +3,26 @@ package com.example.exampleapp2022.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exampleapp2022.data.model.DeveloperModel
-import com.example.exampleapp2022.domain.GetDevelopers
-import com.example.exampleapp2022.domain.GetRandomDeveloper
+import com.example.exampleapp2022.domain.GetDevelopersUseCase
+import com.example.exampleapp2022.domain.GetRandomDeveloperUseCase
+import com.example.exampleapp2022.domain.model.Developer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DeveloperViewModel @Inject constructor(
-    private val getDevelopers: GetDevelopers,
-    private val getRandomDeveloper: GetRandomDeveloper
+    private val getDevelopersUseCase: GetDevelopersUseCase,
+    private val getRandomDeveloperUseCase: GetRandomDeveloperUseCase,
 ) : ViewModel() {
 
     val isProgress = MutableLiveData<Boolean>()
-    val developerModel = MutableLiveData<DeveloperModel>()
+    val developerModel = MutableLiveData<Developer>()
 
     fun onCreate() {
         viewModelScope.launch {
             isProgress.postValue(true)
-            val result = getDevelopers()
+            val result = getDevelopersUseCase()
             if (!result.isNullOrEmpty()) {
                 developerModel.postValue(result[0])
                 isProgress.postValue(false)
@@ -31,10 +31,12 @@ class DeveloperViewModel @Inject constructor(
     }
 
     fun randomDeveloper() {
-        isProgress.postValue(true)
-        val currentDeveloper = getRandomDeveloper()
-        currentDeveloper?.let {
-            developerModel.postValue(it)
+        viewModelScope.launch {
+            isProgress.postValue(true)
+            val developer = getRandomDeveloperUseCase()
+            developer?.let {
+                developerModel.postValue(it)
+            }
             isProgress.postValue(false)
         }
     }
